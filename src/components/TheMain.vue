@@ -73,7 +73,7 @@
             </div>
             <!-- Text Section -->
             <div class="dx-row d-flex flex-column flex-grow-1 pt-5 scrollbar-y">
-                <div v-for="message, i in store.messagesList"
+                <div v-for="message in store.messagesList"
                     :class="message.name === 'sent' ? 'my-msg' : 'user-msg'">{{ message.name }} <small
                         class="msg-date ps-2">{{ message.email }}</small>
                 </div>
