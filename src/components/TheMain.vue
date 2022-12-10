@@ -34,21 +34,21 @@
             </div>
             <!-- Users Container sx -->
             <div class="d-flex flex-column flex-grow-1 flex-shrink-0 scrollbar-y">
-                <div @click="selectedUser = users" v-for="(users, i) in searchUserChat" :key="i + users.name">
+                <div @click="selectedUser = users" v-for="(users, i) in store.charactersList" :key="i + users.id">
                     <div class="d-flex justify-content-between my-2 pb-2 border-bottom user-hover">
                         <div class="d-flex">
                             <div class="image px-2">
-                                <img v-bind:src="users.avatar" alt="">
+                                <img v-bind:src="users.picture.thumbnail" alt="">
                             </div>
                             <div>
-                                <div class="fw-semibold">{{ users.name }}</div>
-                                <div v-if="users.messages.length > 0" class="small text-secondary">
-                                    {{ users.messages[users.messages.length - 1].message }}</div>
+                                <div class="fw-semibold">{{ users.name.first }}</div>
+                                <div v-if="users.messages > 0" class="small text-secondary">
+                                    {{ users.messages[users.messages - 1].message }}</div>
                                 <div v-else>{{ "" }}</div>
                             </div>
                         </div>
-                        <div v-if="users.messages.length > 0" class="small text-secondary pe-2">
-                            {{ users.messages[users.messages.length - 1].date }}</div>
+                        <div v-if="users.messages > 0" class="small text-secondary pe-2">
+                            {{ users.messages[users.messages - 1].date }}</div>
                         <div v-else>{{ "" }}</div>
                     </div>
                 </div>
@@ -61,10 +61,10 @@
                 <div v-else>
                     <div class="d-flex">
                         <div class="me-2">
-                            <img v-bind:src="selectedUser.avatar" alt="">
+                            <img v-bind:src="selectedUser.picture.thumbnail" alt="">
                         </div>
                         <div>
-                            <div class="fw-semibold">{{ selectedUser.name }}</div>
+                            <div class="fw-semibold">{{ selectedUser.name.first }}</div>
                             <div class="text-secondary">Ultimo accesso oggi alle 12:00</div>
                         </div>
                     </div>
@@ -110,9 +110,13 @@
 </template>
 
 <script>
+import {store, fetchCharacters, fetchMessages} from '../store'
 export default {
     data() {
         return {
+            store,
+            fetchCharacters,
+            fetchMessages,
             messageArray: [
                 {
                     newMessage: "",
@@ -327,9 +331,12 @@ export default {
             });
         },
     },
+    mounted() {
+        fetchCharacters(8);
+        fetchMessages();
+    },
 }
 </script>
 
 <style scoped>
-
 </style>
