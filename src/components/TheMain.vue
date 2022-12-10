@@ -28,7 +28,7 @@
                 <div class="flex-fill me-2">
                     <form>
                         <input type="text" class="p-2 border border-start-0 rounded-end w-100"
-                            placeholder="Cerca o inizia una nuova chat" v-model="search">
+                            placeholder="Cerca o inizia una nuova chat">
                     </form>
                 </div>
             </div>
@@ -73,19 +73,9 @@
             </div>
             <!-- Text Section -->
             <div class="dx-row d-flex flex-column flex-grow-1 pt-5 scrollbar-y">
-                <div v-if="selectedUser !== null" v-for="message, i in store.messagesList"
+                <div v-for="message, i in store.messagesList"
                     :class="message.name === 'sent' ? 'my-msg' : 'user-msg'">{{ message.name }} <small
                         class="msg-date ps-2">{{ message.email }}</small>
-                    <div class="ms-3">
-                        <div class="btn-group">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false"></button>
-                            <ul class="dropdown-menu p-1">
-                                <li @click="onInfoMessage(i)">Info messaggio</li>
-                                <li @click="onDeleteMessage(i)">Cancella messaggio</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
                 <!-- Footer Section -->
                 <div class="d-flex justify-content-between align-items-center p-1 banner-color">
@@ -93,8 +83,7 @@
                         <a href="#" class="text-secondary"><i class="fa-regular fa-face-smile"></i></a>
                     </div>
                     <form class="flex-grow-1" @submit.prevent="sendText()">
-                        <input class="flex-fill w-100 border-0 rounded p-2 my-2" type="text"
-                            placeholder="Scrivi un messaggio" v-model="messageArray.newMessage">
+                        <input class="flex-fill w-100 border-0 rounded p-2 my-2" type="text" placeholder="Scrivi un messaggio">
                     </form>
                     <div class="footer-icon pe-3 ms-3">
                         <a href="#" class="text-secondary"><i class="fa-solid fa-microphone"></i></a>
@@ -119,33 +108,7 @@ export default {
                 },
             ],
             selectedUser: null,
-            search: "",
-            dateTime: luxon.DateTime,
         }
-    },
-    methods: {
-        sendText() {
-            this.selectedUser.messages.push({
-                date: this.dateTime.now().toFormat('dd/MM/yyyy HH:mm:ss'),
-                message: this.messageArray.newMessage,
-                status: "sent",
-            });
-            this.messageArray.newMessage = "";
-            setTimeout(this.sendOk, 1000);
-        },
-        sendOk() {
-            this.selectedUser.messages.push({
-                date: this.dateTime.now().toFormat('dd/MM/yyyy HH:mm:ss'),
-                message: "Ok.",
-                status: "received",
-            });
-        },
-        onDeleteMessage(index) {
-            this.selectedUser.messages.splice(index, 1);
-        },
-        onInfoMessage(index) {
-            alert("Data e ora dell'ultimo messaggio: " + this.selectedUser.messages[index].date);
-        },
     },
     computed: {
         searchUserChat() {
